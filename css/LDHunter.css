@@ -1,0 +1,32 @@
+#LDH_mask { -webkit-box-align: center; -webkit-box-orient: vertical; -webkit-box-pack: center; -webkit-transition: 200ms opacity; background-color: rgba(255, 255, 255, 0.75); bottom: 0; display: -webkit-box; left: 0; overflow: auto; padding: 20px; position: fixed; right: 0; top: 0;
+}
+#LDH_log {padding: 5px;background-color: #fff}
+#LDH_log h3 {margin:0; padding: 5px 0; content: ' ';border-bottom: 1px solid #eee;}
+#LDH_close {
+	background-image: url('close.png'); background-position: center; background-repeat: no-repeat; height: 14px; position: absolute; right: 7px; top: 7px; width: 14px;;
+}
+#LDH_close:hover { background-image: url('close_h.png'); }
+#LDH_log {position: fixed; top: 0; left:50%; width: 400px; margin-left: -200px; font-size: 12px; box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);}
+#LDH_log ul {margin:0; padding-left: 15px; overflow-y: scroll; max-height: 210px;}
+
+
+.ing {color: gray}
+.succ {color: green}
+.red {color: red}
+
+
+/* scroll bar */
+#LDH_log ul::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 11px;
+}
+
+#LDH_log ul::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 2px solid white;
+  border-radius: 8px;
+}
+
+#LDH_log ul::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}

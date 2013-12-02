@@ -1,0 +1,31 @@
+{
+	"name": "LDHunter",
+	"version": "1.0.0",
+	"manifest_version": 2,
+	"permissions": ["tabs"],
+
+	"background": {
+		"scripts": ["js/background.js"]
+	},
+
+	"icons": {
+		"128": "Icon.png",
+		"16": "img/icon-16.png",
+		"48": "img/icon-48.png"
+	},
+
+	"page_action": {
+		"default_icon": "img/icon-16.png"
+	},
+
+	"content_scripts": [
+		{
+			"js": ["js/LDHunter.js", "js/test.js"],
+			"css": ["css/LDHunter.css"],
+			"matches": ["*://*/*"],
+			"run_at": "document_end"
+		}
+	],
+
+   "options_page": "options.html"
+}
