@@ -8,11 +8,10 @@ function get_host (url) {
 }
 
 function load_pa (tabId, changeInfo, tab) {
-	if("complete" == changeInfo.status) {
-		chrome.pageAction.show(tabId)
-		// chrome.tabs.sendMessage(tabId, {"a":"b"}, function(r){
-		// 	l(r)
-		// })
+    if("complete" == changeInfo.status) {
+        var url = tab.url
+        if(url && url.indexOf('bbs.lvye.cn/thread') != -1)
+    		chrome.pageAction.show(tabId)	
 	}
 }
 
@@ -52,4 +51,4 @@ function openOptions(firstTime) {
     });
 }
 
-openOptions(true)
+// openOptions(true)
