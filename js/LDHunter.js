@@ -97,7 +97,7 @@ var LDHunter = (function(){
 			var _box = document.createElement('div')
 
 			var s = '<div id="LDH_mask"></div>'
-			s += '<div id="LDH_log"><h3>LDHunter 1.0.0<span id="LDH_close"></span></h3><ul></ul></div>'
+			s += '<div id="LDH_log"><h3>LDHelper 1.0.0<span id="LDH_close"></span></h3><ul></ul></div>'
 			_box.innerHTML = s
 			this.log_wrapper = _box.getElementsByTagName('ul')[0]
 			document.body.appendChild(_box)

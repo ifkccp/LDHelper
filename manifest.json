@@ -2,7 +2,7 @@
 	"name": "LDHunter",
 	"version": "1.0.0",
 	"manifest_version": 2,
-	"permissions": ["tabs"],
+	"permissions": ["tabs", "*://bbs.lvye.cn/*"],
 
 	"background": {
 		"scripts": ["js/background.js"]
@@ -22,7 +22,7 @@
 		{
 			"js": ["js/LDHunter.js", "js/test.js"],
 			"css": ["css/LDHunter.css"],
-			"matches": ["*://*/*"],
+			"matches": ["*://bbs.lvye.cn/*"],
 			"run_at": "document_end"
 		}
 	],
