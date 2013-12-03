@@ -1,3 +1,3 @@
-chrome.extension.onRequest.addListener(function (data, tab) {
+chrome.extension.onMessage.addListener(function (data, tab) {
 	LDHunter.run()
 })

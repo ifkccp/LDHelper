@@ -2,7 +2,7 @@
 	"name": "LDHunter",
 	"version": "1.0.0",
 	"manifest_version": 2,
-	"permissions": ["tabs", "*://bbs.lvye.cn/*"],
+	"permissions": ["tabs", "*://*.lvye.cn/*"],
 
 	"background": {
 		"scripts": ["js/background.js"]

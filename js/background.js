@@ -19,7 +19,7 @@ chrome.tabs.onUpdated.addListener(load_pa)
 
 function send_msg (tab) {
 	chrome.tabs.sendMessage(tab.id, {"a":"b"}, function(r){
-		l(r)
+		// l(r)
 	})
 }
 

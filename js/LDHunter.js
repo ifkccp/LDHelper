@@ -5,10 +5,12 @@ function l(arg) {
 
 var LDHunter = (function(){
 	var Http = (function(){
-		var _H = function(){}
+		var _H = function(){
+			this.ext_headers = {}
+		}
 
 		_H.prototype = {
-			"request": function(type, url){
+			"request": function(type, url, data){
 				var resp = ''
 				var xhr = new XMLHttpRequest()
 				xhr.open(type, url, false)
@@ -20,7 +22,23 @@ var LDHunter = (function(){
 						resp = xhr.responseText
 					}
 				}
-				xhr.send()
+
+				for(i in this.ext_headers) {
+					xhr.setRequestHeader(i, this.ext_headers[i])
+				}
+				this.ext_headers = []
+
+				if("GET" == type)
+					xhr.send()
+				else
+				{
+					xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+					var d = '';
+					for(i in data) {
+						d += i + '=' + data[i] + '&'
+					}
+					xhr.send(d)
+				}
 
 				return resp
 			},
@@ -28,7 +46,11 @@ var LDHunter = (function(){
 				return this.request("GET", url)
 			},
 			"post": function(url, data) {
-				return ''
+				this.set_header("Content-type","application/x-www-form-urlencoded")
+				return this.request("POST", url, data)
+			},
+			"set_header": function(k, v) {
+				this.ext_headers[k] = v
 			}
 		}
 
@@ -60,6 +82,69 @@ var LDHunter = (function(){
 				var s = Http.get("http://sns.lvye.cn/home.php?mod=space")
 				var ms = s.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
 				return ms[1]
+			},
+			"get_gift": function(){
+				var s = Http.get("http://sns.lvye.cn/home.php?mod=task&do=apply&id=45")
+				return (s.indexOf('恭喜您，任务已成功完成') != -1)
+			},
+			"sell_gift": function(){
+				var s = Http.get("http://sns.lvye.cn/home.php?mod=magic&action=mybox&operation=sell&magicid=2&infloat=yes&handlekey=magics&inajax=1&ajaxtarget=fwin_content_magics");
+				var token_reg = /formhash"\svalue="(.*?)"/
+				var ms = s.match(token_reg)
+				var token = ms[1]
+				// token = '1'
+
+				var post_data = {
+					"formhash": token,
+					"handlekey": "magics",
+					"operation": "sell",
+					"magicid": "2",
+					"magicnum": "1",
+					"operatesubmit": "yes",
+				}
+
+				Http.set_header("Origin", "http://sns.lvye.cn")
+				Http.set_header("Referer", "http://sns.lvye.cn/home.php?mod=magic&action=mybox")
+				var s = Http.post("http://sns.lvye.cn/home.php?mod=magic&action=mybox&infloat=yes&inajax=1", post_data)
+				l(s)
+
+			},
+			"_get_post_ids": function(type){
+				var s = '', amount = 0
+				if("feng" == type) {
+					s = Http.get("http://bbs.lvye.cn/forum-7-1.html")
+					amount = 40
+				}else{
+					s = Http.get("http://bbs.lvye.cn/forum-1923-1.html")
+					amount = 20
+				}
+
+				var reg = /normalthread_(\d+)/g
+				var ms = s.match(reg)
+
+				var ids = []
+				for(i in ms) {
+					ids.push(ms[i].substr(13))
+					amount--
+					if(0 == amount) break
+				}
+				return ids
+			},
+			"cmt": function(type) {
+				l(type + ':')
+				var ids = this._get_post_ids(type);
+				var ret = false;
+				for(i in ids) {
+					var id = ids[i]
+					l(ids[i])
+
+					document.getElementById("fastpostmessage").value = "好帖必须要顶啊~~~~"
+					var form = document.getElementById('fastpostform')
+					form.action = form.action.replace(/tid=\d+/, 'tid=' + id);
+					document.getElementById('fastpostsubmit').click()
+					l('finish')
+					break
+				}
 			}
 		}
 
@@ -77,12 +162,13 @@ var LDHunter = (function(){
 			// 初始绿点
 			this.ld_start = this.get_current_ld()
 			// 每日红包
-			this.gift()
+			// this.gift()
 			// 访问好友
-			this.visit()
+			// this.visit()
 			// 回帖
 			this.post_cmt()
-			// 发表说说
+			return
+			// 更新记录
 			this.twit()
 			// 发表日志
 			this.blog()
@@ -130,17 +216,13 @@ var LDHunter = (function(){
 		},
 		"gift": function() {
 			this.log("正在领取红包...", "ing")
-			Http.get("http://sns.lvye.cn/home.php?mod=task&do=apply&id=45")
-			this.log("领取成功，正在出售红包...", "ing")
-
-			// Parser.get_formhash("")
-// 			Http.post("http://sns.lvye.cn/home.php?mod=magic&action=mybox&infloat=yes&inajax=1", "formhash:0ef6b9b8
-// handlekey:magics
-// operation:sell
-// magicid:2
-// magicnum:1
-// operatesubmit:yes")
-			this.log("出售成功，售价45个绿点", "succ")
+			var got_gift = Parser.get_gift()
+			if(got_gift)
+			{
+				this.log("领取成功，暂不支持自动出售，", "succ")
+			}else{
+				this.log("领取失败，可能已经领过", "fail")
+			}
 		},
 		"visit": function() {
 			this.log("正在访问好友页面...", "ing")
@@ -156,7 +238,10 @@ var LDHunter = (function(){
 		},
 		"post_cmt": function() {
 			this.log("正在风版回帖：", "ing")
+			Parser.cmt("feng")
 			this.log("成功在风版回帖20个", "succ")
+			Parser.cmt("nomo")
+			return
 			this.ld_inc(20 * this.price.feng_cmt)
 			this.log("正在普通版回帖：", "ing")
 			this.log("成功在普通版回帖20个", "succ")
