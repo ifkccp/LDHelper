@@ -4,57 +4,87 @@ function l(arg) {
 }
 
 var LDHunter = (function(){
-	var Http = (function(){
-		var _H = function(){
-			this.ext_headers = {}
-		}
+	// 请求和解析数据工具
+	var _Utils = (function(){
+		var _U = function(){
+			this.url_pool = {
+				"space": "http://sns.lvye.cn/home.php?mod=space",
+				"gift_get": "http://sns.lvye.cn/home.php?mod=task&do=apply&id=45",
+				"gift_sell_form": "http://sns.lvye.cn/home.php?mod=magic&action=mybox&operation=sell&magicid=2&infloat=yes&handlekey=magics&inajax=1&ajaxtarget=fwin_content_magics",
+				"gift_sell": "http://sns.lvye.cn/home.php?mod=magic&action=mybox&infloat=yes&inajax=1",
+				"thread_feng_main": "http://bbs.lvye.cn/forum-7-1.html",
+				"thread_normal_main": "http://bbs.lvye.cn/forum-1923-1.html",
+			}
 
-		_H.prototype = {
-			"request": function(type, url, data){
-				var resp = ''
-				var xhr = new XMLHttpRequest()
-				xhr.open(type, url, false)
-				
-				xhr.onreadystatechange = function() {
-					l(xhr.readyState + ' - ' + xhr.status)
-					if(4 == xhr.readyState && 200 == xhr.status)
-					{
-						resp = xhr.responseText
-					}
-				}
+			this.reg_pool = {
+				"ld": /pacecp&ac=credit">(\d+)<\/a><li>绿币/,
+				"hash": /formhash"\svalue="(.*?)"/,
+				"thread_id": /normalthread_(\d+)/g,
+			}
 
-				for(i in this.ext_headers) {
-					xhr.setRequestHeader(i, this.ext_headers[i])
-				}
-				this.ext_headers = []
-
-				if("GET" == type)
-					xhr.send()
-				else
-				{
-					xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded")
-					var d = '';
-					for(i in data) {
-						d += i + '=' + data[i] + '&'
-					}
-					xhr.send(d)
-				}
-
-				return resp
-			},
-			"get": function (url) {
-				return this.request("GET", url)
-			},
-			"post": function(url, data) {
-				this.set_header("Content-type","application/x-www-form-urlencoded")
-				return this.request("POST", url, data)
-			},
-			"set_header": function(k, v) {
-				this.ext_headers[k] = v
+			this.kw_pool = {
+				"gift_succ": "恭喜您，任务已成功完成",
 			}
 		}
 
-		return new _H;
+		_U.prototype = {
+			"get_ld": function() {
+				var s = Http.get(this.url_pool['space'])
+				var ms = s.match(this.reg_pool['ld'])
+				return ms[1]
+			},
+			"get_gift": function() {
+				var s = Http.get(this.url_pool['gift_get'])
+				return (s.indexOf(this.kw_pool) != -1)
+			},
+			"sell_gift": function() {
+				var token = this._get_hash(this.url_pool['gift_sell_form'])
+				var post_data = {
+					"formhash": token,
+					"handlekey": "magics",
+					"operation": "sell",
+					"magicid": "2",
+					"magicnum": "1",
+					"operatesubmit": "yes",
+				}
+
+				var s = Http.post(this.url_pool['gift_sell'], post_data)
+			},
+			"_get_hash": function(url) {
+				var s = Http.get(url)
+				var ms = s.match(this.reg_pool['hash'])
+				return ms[1]
+			},
+			"_get_post_ids": function(type) {
+				var s = '', amount = 0
+				if("feng" == type) {
+					s = Http.get(this.url_pool['thread_feng_main'])
+					amount = 40
+				} else {
+					s = Http.get(this.url_pool['thread_normal_main'])
+					amount = 20
+				}
+
+				var ms = s.match(this.reg_pool['thread_id'])
+
+				var ids = []
+				for(i in ms) {
+					ids.push(ms[i].substr(13))
+					amount--
+					if(0 == amount) break
+				}
+
+				return ids
+			},
+			"cmt": function(type) {
+				var ids = this._get_post_ids(type)
+				for(i in ids) {
+					document.getElementById("fastpostmessage").value = ""
+				}
+			}
+		}
+
+		return new _U
 	})()
 
 	var L = function() {
@@ -70,66 +100,12 @@ var LDHunter = (function(){
 			"twit": 5,
 			"blog": 5
 		}
-
-		this.cfg = this.load_cfg()
 	}
 
 	var Parser = (function(){
 		var _P = function(){}
 
 		_P.prototype = {
-			"get_ld": function(){
-				var s = Http.get("http://sns.lvye.cn/home.php?mod=space")
-				var ms = s.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
-				return ms[1]
-			},
-			"get_gift": function(){
-				var s = Http.get("http://sns.lvye.cn/home.php?mod=task&do=apply&id=45")
-				return (s.indexOf('恭喜您，任务已成功完成') != -1)
-			},
-			"sell_gift": function(){
-				var s = Http.get("http://sns.lvye.cn/home.php?mod=magic&action=mybox&operation=sell&magicid=2&infloat=yes&handlekey=magics&inajax=1&ajaxtarget=fwin_content_magics");
-				var token_reg = /formhash"\svalue="(.*?)"/
-				var ms = s.match(token_reg)
-				var token = ms[1]
-				// token = '1'
-
-				var post_data = {
-					"formhash": token,
-					"handlekey": "magics",
-					"operation": "sell",
-					"magicid": "2",
-					"magicnum": "1",
-					"operatesubmit": "yes",
-				}
-
-				Http.set_header("Origin", "http://sns.lvye.cn")
-				Http.set_header("Referer", "http://sns.lvye.cn/home.php?mod=magic&action=mybox")
-				var s = Http.post("http://sns.lvye.cn/home.php?mod=magic&action=mybox&infloat=yes&inajax=1", post_data)
-				l(s)
-
-			},
-			"_get_post_ids": function(type){
-				var s = '', amount = 0
-				if("feng" == type) {
-					s = Http.get("http://bbs.lvye.cn/forum-7-1.html")
-					amount = 40
-				}else{
-					s = Http.get("http://bbs.lvye.cn/forum-1923-1.html")
-					amount = 20
-				}
-
-				var reg = /normalthread_(\d+)/g
-				var ms = s.match(reg)
-
-				var ids = []
-				for(i in ms) {
-					ids.push(ms[i].substr(13))
-					amount--
-					if(0 == amount) break
-				}
-				return ids
-			},
 			"cmt": function(type) {
 				l(type + ':')
 				var ids = this._get_post_ids(type);

@@ -20,7 +20,12 @@
 
 	"content_scripts": [
 		{
-			"js": ["js/LDHunter.js", "js/test.js"],
+			"js": [
+				"js/lib/Settings.js",
+				"js/lib/Http.js",
+				"js/LDHunter.js",
+				"js/test.js"
+			],
 			"css": ["css/LDHunter.css"],
 			"matches": ["*://bbs.lvye.cn/*"],
 			"run_at": "document_end"
