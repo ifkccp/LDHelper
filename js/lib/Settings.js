@@ -5,10 +5,22 @@ var Settings = (function(){
 		this.cache = {}
 	}
 
+	var DefaultVals = {
+		"frds": "1\n2\n3",
+		"cmt": "def1\ndef2\ndef3",
+		"twit": "def1\ndef2\ndef3",
+		"blog": "def1\ndef2\ndef3",
+		"reply": "def1\ndef2\ndef3",
+	}
+
 	_S.prototype = {
-		"get": function(key, defaultVal) {
+		"get": function(key) {
 			if(this.cache[key])
 				return this.cache[key]
+
+			var defaultVal = ''
+			if(DefaultVals[key])
+				defaultVal = DefaultVals[key]
 
 			if(!localStorage.config)
 				return defaultVal

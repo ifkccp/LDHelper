@@ -79,7 +79,12 @@ var LDHunter = (function(){
 			"cmt": function(type) {
 				var ids = this._get_post_ids(type)
 				for(i in ids) {
-					document.getElementById("fastpostmessage").value = ""
+					document.getElementById("fastpostmessage").value = "好帖必须要顶啊~~~~"
+					var form = document.getElementById('fastpostform')
+					form.action = form.action.replace(/tid=\d+/, 'tid=' + id);
+					document.getElementById('fastpostsubmit').click()
+
+					Http.sleep(25)
 				}
 			}
 		}

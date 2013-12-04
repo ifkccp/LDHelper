@@ -65,7 +65,8 @@ div.settings ol {margin-top: 5px; margin-bottom: 30px;}
 }
 h4 {margin: 0;font-size: 1.1em}
 .tips {font-style: italic;font-size: 12px; color: #aaa;}
-.submit {float: right; min-height: 26px;
+.submit {
+	float: right;
 	min-width: 72px;
 	-webkit-appearance: none;
 	-webkit-user-select: none;
@@ -77,9 +78,16 @@ h4 {margin: 0;font-size: 1.1em}
 	font: inherit;
 	margin: 0 1px 0 0;
 	text-shadow: 0 1px 0 #F0F0F0;
+	font-size: 14px;
 }
 .win_form {margin: 10px 0;}
-.win_form textarea {width: 99%}
+.win_form textarea {
+	width: 99%;
+	border-color: #bbb;
+}
+.win_form textarea:focus {
+	box-shadow: 0 0 10px #bbb inset;
+}
 span.close {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAQAAAC1QeVaAAAAUklEQVR4XqXPYQrAIAhAYW/gXd8NJxTopVqsGEhtf+L9/ERU2k/HSMFQpKcYJeNFI9Be0LCMij8cYyjj5EHIivGBkwLfrbX3IF8PqumVmnDpEG+eDsKibPG2JwAAAABJRU5ErkJggg=='); background-position: center; background-repeat: no-repeat; height: 14px; position: absolute; right: 7px; top: 7px; width: 14px;
 }
