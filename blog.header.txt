@@ -1,0 +1,107 @@
+1 / 35 requests  ❘  6.4 KB / 10.0 KB transferred  ❘  3.15 s (load: 3.37 s, DOMContentLoaded: 3.36 s)
+home.php?mod=spacecp&ac=blog&blogid=
+1.42 s53 ms
+HeadersPreviewResponseCookiesTiming
+Request URL:http://sns.lvye.cn/home.php?mod=spacecp&ac=blog&blogid=
+Request Method:POST
+Status Code:200 OK
+Request Headersview source
+Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Encoding:gzip,deflate,sdch
+Accept-Language:en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4
+AlexaToolbar-ALX_NS_PH:AlexaToolbar/alxg-3.2
+Cache-Control:max-age=0
+Connection:keep-alive
+Content-Length:1391
+Content-Type:multipart/form-data; boundary=----WebKitFormBoundaryBklMdhxPbj1V3vIB
+Cookie:AMP_UID=y1ozF06yafc2psTucJwk6; bdshare_firstime=1382591840657; yatccm=on; AMP_UFC=1385111730; yaaycm=on; Ryow_c470_saltkey=ggGOOxls; Ryow_c470_lastvisit=1386217563; Ryow_c470_sina_bind_1163670=-1; Ryow_c470_auth=f792HuvHnSudowppEGeTkDVmzwRvzUN%2B4M22T3aaYESjL8cjJIPmucnYpWi3%2Fg%2F7KXGe0KHiedKKsTMyosTHWFX0SUZi; sessionid=jjg3uxeyohc70zwo51maddeoc35ubbk7; Ryow_c470_XWB_P_SESSION=267fd67713fd613ca6edfb7ea405d4deb9315b61; Ryow_c470_ulastactivity=a265lAGz0seUnmgsGduA8Ng0Gc3GWjDewwmCeBau2zZKHspcc5je; Ryow_c470_viewuids=1_2_3_4_5_6_8_10_11_12; Ryow_c470_visitedfid=2D361; Ryow_c470_oldtopics=8000D8000D8000D8000D8000; Ryow_c470_smile=1D1; Ryow_c470_home_readfeed=1386249958; Ryow_c470_sendmail=1; Ryow_c470_home_diymode=1; PHPSESSID=c60dfa128de344bb1f9991d3a920098e; Ryow_c470_sid=44E848; CNZZDATA5441700=cnzz_eid%3D681460304-1382358168-http%253A%252F%252Fsns.lvye.cn%26ntime%3D1386246316%26cnzz_a%3D86%26sin%3Dnone%26ltime%3D1386220248445%26rtime%3D23; pgv_pvi=9703127488; pgv_info=ssi=s9394330700; Hm_lvt_d115ff5d8612d97fba465e8c30ea73b7=1385961115,1386044920,1386218169,1386246316; Hm_lpvt_d115ff5d8612d97fba465e8c30ea73b7=1386251126; Ryow_c470_lastact=1386251131%09home.php%09spacecp; Ryow_c470_connect_is_bind=1; Ryow_c470_mrd=%09
+Host:sns.lvye.cn
+Origin:http://sns.lvye.cn
+Referer:http://sns.lvye.cn/home.php?mod=spacecp&ac=blog
+User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1671.3 Safari/537.36
+Query String Parametersview sourceview URL encoded
+mod:spacecp
+ac:blog
+blogid:
+Request Payload
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="subject"
+
+t3
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="message"
+
+n3
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="retid"
+
+0
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="rekeyid"
+
+0
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="eventid"
+
+-1
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="classid"
+
+0
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="tag"
+
+
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="friend"
+
+0
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="password"
+
+
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="selectgroup"
+
+
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="target_names"
+
+
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="makefeed"
+
+1
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="blogsubmit"
+
+true
+------WebKitFormBoundaryBklMdhxPbj1V3vIB
+Content-Disposition: form-data; name="formhash"
+
+b9f7b70d
+------WebKitFormBoundaryBklMdhxPbj1V3vIB--
+Response Headersview source
+Cache-Control:no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Connection:keep-alive
+Content-Encoding:gzip
+Content-Length:5074
+Content-Type:text/html; charset=utf-8
+Date:Thu, 05 Dec 2013 13:45:47 GMT
+Expires:Thu, 19 Nov 1981 08:52:00 GMT
+Pragma:no-cache
+Server:nginx/1.2.1
+Set-Cookie:Ryow_c470_connect_is_bind=1; expires=Fri, 05-Dec-2014 13:45:47 GMT; path=/; domain=.lvye.cn
+Set-Cookie:Ryow_c470_lastact=1386251147%09home.php%09spacecp; expires=Fri, 06-Dec-2013 13:45:47 GMT; path=/; domain=.lvye.cn
+Set-Cookie:Ryow_c470_sid=44E848; expires=Fri, 06-Dec-2013 13:45:47 GMT; path=/; domain=.lvye.cn
+Set-Cookie:Ryow_c470_stats_qc_reg=deleted; expires=Wed, 05-Dec-2012 13:45:46 GMT; path=/; domain=.lvye.cn
+Set-Cookie:Ryow_c470_stats_qc_login=deleted; expires=Wed, 05-Dec-2012 13:45:46 GMT; path=/; domain=.lvye.cn
+Set-Cookie:Ryow_c470_cloudstatpost=deleted; expires=Wed, 05-Dec-2012 13:45:46 GMT; path=/; domain=.lvye.cn
+Set-Cookie:Ryow_c470_mrn=deleted; expires=Wed, 05-Dec-2012 13:45:46 GMT; path=/; domain=.lvye.cn
+Set-Cookie:Ryow_c470_clearUserdata=home; path=/; domain=.lvye.cn
+Set-Cookie:PHPSESSID=c60dfa128de344bb1f9991d3a920098e; path=/
+Set-Cookie:Ryow_c470_mrd=%09; expires=Thu, 05-Dec-2013 14:45:47 GMT; path=/; domain=.lvye.cn
+Vary:Accept-Encoding
+X-Cache:MISS from CNC-JSWX-254-118.fastcdn.com
+X-Cache:MISS from CNC-BJTT-50-113.fastcdn.com
+X-Powered-By:PHP/5.2.17

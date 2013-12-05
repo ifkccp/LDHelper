@@ -1,3 +1,3 @@
-chrome.extension.onMessage.addListener(function (data, tab) {
-	LDHunter.run()
+chrome.extension.onMessage.addListener(function (settings, tab) {
+	LDHunter.run(settings)
 })

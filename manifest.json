@@ -1,11 +1,14 @@
 {
-	"name": "LDHunter",
+	"name": "LDHelper",
 	"version": "1.0.0",
 	"manifest_version": 2,
 	"permissions": ["tabs", "*://*.lvye.cn/*"],
 
 	"background": {
-		"scripts": ["js/background.js"]
+		"scripts": [
+			"js/lib/Settings.js",
+			"js/background.js"
+		]
 	},
 
 	"icons": {
@@ -21,7 +24,6 @@
 	"content_scripts": [
 		{
 			"js": [
-				"js/lib/Settings.js",
 				"js/lib/Http.js",
 				"js/LDHelper.js",
 				"js/test.js"

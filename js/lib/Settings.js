@@ -41,6 +41,13 @@ var Settings = (function(){
 
 			config[key] = value
 			localStorage.config = JSON.stringify(config)
+		},
+		"get_all": function() {
+			var ret = {}
+			for(i in DefaultVals) {
+				ret[i] = this.get(i)
+			}
+			return ret
 		}
 	}
 

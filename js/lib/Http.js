@@ -19,7 +19,7 @@ var Http = (function(){
 		},
 		"_request": function(type, url, data){
 			var resp = ''
-			var xhr = nwe XMLHttpRequest()
+			var xhr = new XMLHttpRequest()
 			xhr.open(type, url, false)
 
 			xhr.onreadystatechange = function() {
@@ -35,15 +35,16 @@ var Http = (function(){
 
 			if("GET" == type) {
 				xhr.send()
-			}
 			}else{
 				var post_data = ''
 				for(i in data) {
-					post_data += i + '=' + data[i] + '&'
+					post_data += i + '=' + encodeURIComponent(data[i]) + '&'
 				}
 				if(post_data) {
-					post_data = post_data.substr(-1)
+					post_data = post_data.substr(0, post_data.length - 1)
 				}
+				console.log('taggggg')
+				console.log(post_data)
 				xhr.send(post_data)
 			}
 

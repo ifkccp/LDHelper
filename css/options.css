@@ -86,7 +86,9 @@ h4 {margin: 0;font-size: 1.1em}
 	border-color: #bbb;
 }
 .win_form textarea:focus {
-	box-shadow: 0 0 10px #bbb inset;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+	outline: none;
+	border-color: #4d90fe;
 }
 span.close {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAQAAAC1QeVaAAAAUklEQVR4XqXPYQrAIAhAYW/gXd8NJxTopVqsGEhtf+L9/ERU2k/HSMFQpKcYJeNFI9Be0LCMij8cYyjj5EHIivGBkwLfrbX3IF8PqumVmnDpEG+eDsKibPG2JwAAAABJRU5ErkJggg=='); background-position: center; background-repeat: no-repeat; height: 14px; position: absolute; right: 7px; top: 7px; width: 14px;

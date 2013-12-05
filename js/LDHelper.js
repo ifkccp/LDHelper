@@ -9,9 +9,19 @@ var LDHunter = (function(){
 		var _U = function(){
 			this.url_pool = {
 				"space": "http://sns.lvye.cn/home.php?mod=space",
+				
 				"gift_get": "http://sns.lvye.cn/home.php?mod=task&do=apply&id=45",
 				"gift_sell_form": "http://sns.lvye.cn/home.php?mod=magic&action=mybox&operation=sell&magicid=2&infloat=yes&handlekey=magics&inajax=1&ajaxtarget=fwin_content_magics",
 				"gift_sell": "http://sns.lvye.cn/home.php?mod=magic&action=mybox&infloat=yes&inajax=1",
+				
+				"visit": "http://sns.lvye.cn/space-uid-[UID].html",
+				
+				"twit_form": "http://sns.lvye.cn/home.php?mod=space&uid=[UID]&do=doing&view=me&from=space",
+				"twit_post": "http://sns.lvye.cn/home.php?mod=spacecp&ac=doing&view=me",
+
+				"blog_form": "http://sns.lvye.cn/home.php?mod=spacecp&ac=blog",
+				"blog_post": "",
+
 				"thread_feng_main": "http://bbs.lvye.cn/forum-7-1.html",
 				"thread_normal_main": "http://bbs.lvye.cn/forum-1923-1.html",
 			}
@@ -25,17 +35,30 @@ var LDHunter = (function(){
 			this.kw_pool = {
 				"gift_succ": "恭喜您，任务已成功完成",
 			}
+
+			this.user = {}
 		}
 
 		_U.prototype = {
 			"get_ld": function() {
 				var s = Http.get(this.url_pool['space'])
-				var ms = s.match(this.reg_pool['ld'])
+				if(s.indexOf('请先登录后才能继续浏览') !== -1)
+					return -1
+
+				var ms = s.match(/discuz_uid\s=\s'(\d+)'/)
+				this.user['uid'] = ms[1]
+
+				ms = s.match(this.reg_pool['ld'])
 				return ms[1]
 			},
 			"get_gift": function() {
 				var s = Http.get(this.url_pool['gift_get'])
 				return (s.indexOf(this.kw_pool) != -1)
+			},
+			"_get_hash": function(url) {
+				var s = Http.get(url)
+				var ms = s.match(this.reg_pool['hash'])
+				return ms[1]
 			},
 			"sell_gift": function() {
 				var token = this._get_hash(this.url_pool['gift_sell_form'])
@@ -49,12 +72,51 @@ var LDHunter = (function(){
 				}
 
 				var s = Http.post(this.url_pool['gift_sell'], post_data)
+				console.log(s)
 			},
-			"_get_hash": function(url) {
-				var s = Http.get(url)
-				var ms = s.match(this.reg_pool['hash'])
-				return ms[1]
+			"visit": function() {
+				var ids = this.settings.frds
+				ids += "\n1163670"
+				ids = ids.replace(/\n+/, "\n")
+				ids = ids.split("\n")
+				ids = ids.slice(0, 10)
+
+				for(i in ids) {
+					Http.get(this.url_pool['visit'].replace('[UID]', this.user['uid']))
+				}
 			},
+			"_rand": function(n) {
+				return parseInt(Math.random() * n)
+			},
+			"twit": function() {
+				var words = this.settings.twit.split("\n")
+				var hash = this._get_hash(this.url_pool['twit_form'])
+				var post_data = {
+					"add": "",
+					"addsubmit": "true",
+					"refer": "home.php?mod=space&uid="+this.user['uid']+"&do=doing&view=me&from=space",
+					"topicid": "",
+					"formhash": hash
+				}
+
+				for(i = 0; i < 5; i++) {
+					post_data['message'] = words[this._rand(words.length)]
+					var s = Http.post(this.url_pool['twit_post'], post_data)
+				}
+			},
+			"blog": function() {
+				var words = this.settings.blog.split("\n")
+				var hash = this._get_hash(this.url_pool['blog_form'])
+				var post_data = {
+					
+				}
+
+				for(i = 0; i < 3; i++) {
+
+				}
+			},
+
+
 			"_get_post_ids": function(type) {
 				var s = '', amount = 0
 				if("feng" == type) {
@@ -107,52 +169,38 @@ var LDHunter = (function(){
 		}
 	}
 
-	var Parser = (function(){
-		var _P = function(){}
-
-		_P.prototype = {
-			"cmt": function(type) {
-				l(type + ':')
-				var ids = this._get_post_ids(type);
-				var ret = false;
-				for(i in ids) {
-					var id = ids[i]
-					l(ids[i])
-
-					document.getElementById("fastpostmessage").value = "好帖必须要顶啊~~~~"
-					var form = document.getElementById('fastpostform')
-					form.action = form.action.replace(/tid=\d+/, 'tid=' + id);
-					document.getElementById('fastpostsubmit').click()
-					l('finish')
-					break
-				}
-			}
-		}
-
-		return new _P
-	})()
-
 	L.prototype = {
 		"load_cfg": function () {
 			return {}
 		},
-		"run": function () {
-			if(this.success) return;
+		"run": function (settings) {
+			if(this.success) return
+			_Utils.settings = settings
 			
 			this.init_box()
+
 			// 初始绿点
 			this.ld_start = this.get_current_ld()
-			// 每日红包
+			if(-1 == this.ld_start) return
+
+			// 每日红包 - 出售时来源不正确
 			// this.gift()
+
 			// 访问好友
 			// this.visit()
+
+			// 更新记录 - 来源不正确
+			// this.twit()
+
+			// 发表日志
+			this.blog()
+
+			return
+
 			// 回帖
 			this.post_cmt()
 			return
-			// 更新记录
-			this.twit()
-			// 发表日志
-			this.blog()
+			
 
 
 			// 最终绿点
@@ -184,7 +232,13 @@ var LDHunter = (function(){
 		},
 		"get_current_ld": function () {
 			this.log("正在获取当前绿点状态...", "ing")
-			var count = Parser.get_ld()
+			var count = _Utils.get_ld()
+			if(-1 == count)
+			{
+				alert("请登录网站先~~")
+				window.location = "http://bbs.lvye.cn/member.php?mod=logging&action=login"
+				return -1
+			}
 			this.log("当前拥有"+count+"个绿点，土豪，我们做朋友吧~~", "succ")
 			return count
 		},
@@ -197,46 +251,45 @@ var LDHunter = (function(){
 		},
 		"gift": function() {
 			this.log("正在领取红包...", "ing")
-			var got_gift = Parser.get_gift()
+			var got_gift = _Utils.get_gift()
 			if(got_gift)
 			{
 				this.log("领取成功，暂不支持自动出售，", "succ")
+				_Utils.sell_gift()
 			}else{
 				this.log("领取失败，可能已经领过", "fail")
 			}
 		},
 		"visit": function() {
 			this.log("正在访问好友页面...", "ing")
-
-			var frds = [1163670], id = frds[0]
-			for(var i = 0; i < 10; i++) {
-				Http.get("http://sns.lvye.cn/space-uid-"+id+".html")
-				id++
-			}
-
+			_Utils.visit()
 			this.log("成功访问10个好友", "succ")
 			this.ld_inc(10 * this.price.visit)
 		},
+		"twit": function() {
+			this.log("正在发表记录...", "ing")
+			_Utils.twit()
+			this.log("成功发表5条记录", "succ")
+			this.ld_inc(5 * this.price.twit)
+		},
+		"blog": function() {
+			this.log("正在发表日志...", "ing")
+			_Utils.blog()
+			this.log("成功发表5篇博客", "succ")
+			this.ld_inc(5 * this.price.blog)
+		}
+
+
 		"post_cmt": function() {
 			this.log("正在风版回帖：", "ing")
-			Parser.cmt("feng")
+			_Utils.cmt("feng")
 			this.log("成功在风版回帖20个", "succ")
-			Parser.cmt("nomo")
+			_Utils.cmt("nomo")
 			return
 			this.ld_inc(20 * this.price.feng_cmt)
 			this.log("正在普通版回帖：", "ing")
 			this.log("成功在普通版回帖20个", "succ")
 			this.ld_inc(20 * this.price.nomo_cmt)
-		},
-		"twit": function() {
-			this.log("正在发表说说...", "ing")
-			this.log("成功发表5条说说", "succ")
-			this.ld_inc(5 * this.price.twit)
-		},
-		"blog": function() {
-			this.log("正在发表日志...", "ing")
-			this.log("成功发表5篇博客", "succ")
-			this.ld_inc(5 * this.price.blog)
 		}
 	}
 
