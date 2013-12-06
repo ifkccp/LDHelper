@@ -1,3 +1,3 @@
 chrome.extension.onMessage.addListener(function (settings, tab) {
-	LDHunter.run(settings)
+	LDHelper.run(settings)
 })

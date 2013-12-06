@@ -15,7 +15,7 @@ var Http = (function(){
 			this.headers[k] = v
 		},
 		"sleep": function(sec) {
-			this.get("http://42.121.193.15/sleep.php?s=" + sec)
+			this.get("http://42.121.193.15/sleep.php?s=" + sec + "&" + Math.random())
 		},
 		"_request": function(type, url, data){
 			var resp = ''
@@ -43,13 +43,30 @@ var Http = (function(){
 				if(post_data) {
 					post_data = post_data.substr(0, post_data.length - 1)
 				}
-				console.log('taggggg')
-				console.log(post_data)
 				xhr.send(post_data)
 			}
 
 			return resp
 		},
+		"payload": function(url, data) {
+			var resp = ''
+			var xhr = new XMLHttpRequest()
+			xhr.open("POST", url, false)
+
+			xhr.onreadystatechange = function() {
+				if(4 == xhr.readyState && 200 == xhr.status) {
+					resp = xhr.responseText
+				}
+			}
+
+			for(i in this.headers) {
+				xhr.setRequestHeader(i, this.headers[i])
+			}
+			this.headers = {}
+			xhr.send(JSON.stringify(data))
+
+			return resp
+		}
 	}
 
 	return new _H

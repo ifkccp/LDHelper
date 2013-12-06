@@ -2,7 +2,11 @@
 	"name": "LDHelper",
 	"version": "1.0.0",
 	"manifest_version": 2,
-	"permissions": ["tabs", "*://*.lvye.cn/*"],
+	"permissions": [
+		"tabs",
+		"*://*.lvye.cn/*",
+		"*://42.121.193.15/*"
+	],
 
 	"background": {
 		"scripts": [
@@ -28,7 +32,7 @@
 				"js/LDHelper.js",
 				"js/test.js"
 			],
-			"css": ["css/LDHunter.css"],
+			"css": ["css/LDHelper.css"],
 			"matches": ["*://*.lvye.cn/*"],
 			"run_at": "document_end"
 		}
