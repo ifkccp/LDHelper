@@ -24,6 +24,8 @@ var LDHelper = (function(){
 
 				"thread_feng_main": "http://bbs.lvye.cn/forum-7-1.html",
 				"thread_normal_main": "http://bbs.lvye.cn/forum-1923-1.html",
+
+				"thread_post": "http://bbs.lvye.cn/forum.php?mod=post&action=reply&fid=361&tid=[TID]&extra=&replysubmit=yes&infloat=yes&handlekey=fastpost&inajax=1"
 			}
 
 			this.reg_pool = {
@@ -37,6 +39,8 @@ var LDHelper = (function(){
 			}
 
 			this.user = {}
+
+			this.hash = ''
 		}
 
 		_U.prototype = {
@@ -56,8 +60,11 @@ var LDHelper = (function(){
 				return (s.indexOf(this.kw_pool) != -1)
 			},
 			"_get_hash": function(url) {
+				if(this.hash) return this.hash
+
 				var s = Http.get(url)
 				var ms = s.match(this.reg_pool['hash'])
+				this.hash = ms[1]
 				return ms[1]
 			},
 			"sell_gift": function() {
@@ -83,6 +90,7 @@ var LDHelper = (function(){
 
 				for(i in ids) {
 					Http.get(this.url_pool['visit'].replace('[UID]', ids[i]))
+					break
 				}
 			},
 			"_rand": function(n) {
@@ -102,6 +110,7 @@ var LDHelper = (function(){
 				for(i = 0; i < 5; i++) {
 					post_data['message'] = words[this._rand(words.length)]
 					var s = Http.post(this.url_pool['twit_post'], post_data)
+					break
 				}
 			},
 			"blog": function() {
@@ -129,7 +138,8 @@ var LDHelper = (function(){
 					info =  info.split("###")
 					post_data['subject'] = info[0]
 					post_data['message'] = info[1]
-					Http.payload(this.url_pool['blog_post'], post_data)
+					Http.post(this.url_pool['blog_post'], post_data)
+					break
 					Http.sleep(10)
 				}
 			},
@@ -149,6 +159,7 @@ var LDHelper = (function(){
 				for(i in ms) {
 					ids.push(ms[i].substr(13))
 					amount--
+					break
 					if(0 == amount) break
 				}
 
@@ -156,13 +167,22 @@ var LDHelper = (function(){
 			},
 			"cmt": function(type) {
 				var ids = this._get_post_ids(type)
-				for(i in ids) {
-					document.getElementById("fastpostmessage").value = "好帖必须要顶啊~~~~"
-					var form = document.getElementById('fastpostform')
-					form.action = form.action.replace(/tid=\d+/, 'tid=' + ids[i]);
-					document.getElementById('fastpostsubmit').click()
+				var words = this.settings.cmt.split("\n")
+				var post_data = {
+					'message':'嗯嗯嗯~~~',
+					'posttime':'1',
+					'formhash':this.hash,
+					'subject':''
+				}
 
+				for(i in ids) {
+					post_data['posttime'] = Date.parse(new Date())
+					post_data['message'] = words[this._rand(words.length)]
+					var url = this.url_pool['thread_post'].replace('[TID]', ids[i])
+					var s = Http.post(url, post_data)
+					console.log(s)
 					Http.sleep(25)
+					break
 				}
 			}
 		}
@@ -200,19 +220,19 @@ var LDHelper = (function(){
 			if(-1 == this.ld_start) return
 
 			// 每日红包 - 出售时来源不正确
-			this.gift()
+			// this.gift()
 
 			// 访问好友
 			this.visit()
 
 			// 更新记录 - 来源不正确
-			this.twit()
+			// this.twit()
 
 			// 发表日志
 			this.blog()
 
 			// 回帖
-			this.post_cmt()
+			// this.post_cmt()
 
 			// 最终绿点
 			this.ld_end = this.get_current_ld()

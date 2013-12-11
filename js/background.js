@@ -10,7 +10,8 @@ function get_host (url) {
 function load_pa (tabId, changeInfo, tab) {
     if("complete" == changeInfo.status) {
         var url = tab.url
-        if(url && url.indexOf('bbs.lvye.cn/thread') != -1)
+        // if(url && url.indexOf('bbs.lvye.cn/thread') != -1)
+        if(url && url.indexOf('.lvye.cn') != -1)
     		chrome.pageAction.show(tabId)	
 	}
 }

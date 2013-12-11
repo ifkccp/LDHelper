@@ -8,6 +8,7 @@ var Http = (function(){
 			return this._request("GET", url)
 		},
 		"post": function(url, data){
+			console.log('post : ' + url)
 			this.set_header("Content-type", "application/x-www-form-urlencoded")
 			return this._request("POST", url, data)
 		},
