@@ -4,13 +4,13 @@ var Http = (function(){
 	}
 
 	_H.prototype = {
-		"get": function(url){
-			return this._request("GET", url)
+		"get": function(url, func){
+			return this._request(func, "GET", url)
 		},
-		"post": function(url, data){
+		"post": function(url, data, func){
 			console.log('post : ' + url)
 			this.set_header("Content-type", "application/x-www-form-urlencoded")
-			return this._request("POST", url, data)
+			return this._request(func, "POST", url, data)
 		},
 		"set_header": function(k, v){
 			this.headers[k] = v
@@ -18,14 +18,15 @@ var Http = (function(){
 		"sleep": function(sec) {
 			this.get("http://42.121.193.15/sleep.php?s=" + sec + "&" + Math.random())
 		},
-		"_request": function(type, url, data){
+		"_request": function(func, type, url, data){
 			var resp = ''
 			var xhr = new XMLHttpRequest()
-			xhr.open(type, url, false)
+			xhr.open(type, url)
 
 			xhr.onreadystatechange = function() {
 				if(4 == xhr.readyState && 200 == xhr.status) {
 					resp = xhr.responseText
+					func(xhr.responseText)
 				}
 			}
 

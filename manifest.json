@@ -29,6 +29,7 @@
 		{
 			"js": [
 				"js/lib/Http.js",
+				"js/lib/Utils.js",
 				"js/LDHelper.js",
 				"js/test.js"
 			],
