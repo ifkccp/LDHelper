@@ -4,6 +4,11 @@
 	padding: 5px;background-color: #fff;
 	font-family: "Helvetica Neue", Helvetica, Arial, "WenQuanYi Micro Hei", "Microsoft Yahei", SimSun, sans-serif;}
 #LDH_log h3 {margin:0; padding: 5px 0; content: ' ';border-bottom: 1px solid #eee;}
+#LDH_name {
+	margin-left: 30px;
+	font-size: 85%;
+	color: green;
+}
 #LDH_close {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAQAAAC1QeVaAAAAUklEQVR4XqXPYQrAIAhAYW/gXd8NJxTopVqsGEhtf+L9/ERU2k/HSMFQpKcYJeNFI9Be0LCMij8cYyjj5EHIivGBkwLfrbX3IF8PqumVmnDpEG+eDsKibPG2JwAAAABJRU5ErkJggg=='); background-position: center; background-repeat: no-repeat; height: 14px; position: absolute; right: 7px; top: 7px; width: 14px;
 }
