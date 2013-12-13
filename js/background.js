@@ -26,6 +26,12 @@ function send_msg (tab) {
 
 chrome.pageAction.onClicked.addListener(send_msg)
 
+chrome.extension.onRequest.addListener( function(request, sender, sendResponse) {
+	console.log(request)
+	if(request.type) {
+		Settings.set('last_' + request.type, (new Date()).toLocaleString())
+	}
+})
 
 // function openOptions(firstTime) {
 //     var url = "options.html";

@@ -83,6 +83,9 @@ var LDHelper = (function(){
 
 	_L.prototype = {
 		"next_action": null,
+		"rand": function(words){
+			return words[parseInt(Math.random() * words.length)]
+		},
 		"init": function(settings){
 			if(this.has_init) return
 			this.has_init = true
@@ -90,11 +93,21 @@ var LDHelper = (function(){
 			this.settings = settings
 			var host = window.location.host
 			host = host.substr(0, host.indexOf('.')) // sns & bbs
-			host = 'bbs'
 			this.host = host
 
 			var _box = document.createElement('div')
 			var words = ''
+			if('sns' == host) {
+				words = '您可以在本页面领取出售红包、访问好友、发布动态和博客。'
+				if(this.settings.last_sns) {
+					words += '上次做这些操作是在' + this.settings.last_sns
+				}
+			} else {
+				words = '您可以在本页面发布对帖子的回复。'
+				if(this.settings.last_bbs) {
+					words += '上次做这些操作是在' + this.settings.last_bbs
+				}
+			}
 
 			var s = '<div id="LDH_mask"></div>'
 			s += '<div id="LDH_log"><h3>LDHelper 1.0.0<span id="LDH_name"></span><span id="LDH_close"></span></h3><div>'+words+'<br /><span id="LDH_start">开搞！</span></div></div>'
@@ -139,11 +152,10 @@ var LDHelper = (function(){
 				}
 				else
 				{
-					// var ms = r.match(/discuz_uid\s=\s'(\d+)'/)
-					// self.user['uid'] = ms[1]
-					// ms = r.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
-					// self.ld_start = ms[1]
-					self.ld_start = 1
+					var ms = r.match(/discuz_uid\s=\s'(\d+)'/)
+					self.user['uid'] = ms[1]
+					ms = r.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
+					self.ld_start = ms[1]
 					self.log("当前拥有"+self.ld_start+"个绿点，土豪，我们做朋友吧~~", "succ")
 				}
 			}
@@ -155,10 +167,10 @@ var LDHelper = (function(){
 			this.next_action = this.get_token
 
 			this.ajax_call = function(r){
-				Utils.get_by_id('LDH_name').innerHTML = '小井嗨嗨~~'
+				Utils.get_by_id('LDH_name').innerHTML = r + '嗨嗨~~'
 			}
 
-			this.get("a")
+			this.get("http://42.121.193.15/krm/LDHelper.php?action=get_info&uid=" + this.user['uid'])
 		},
 		"visit": function() {
 			if(!this.it_name)
@@ -196,7 +208,7 @@ var LDHelper = (function(){
 			this.ajax_call = function(r){
 				if(r.indexOf('恭喜您，任务已成功完成') != -1) {
 					self.log("领取成功，正在出售...", "succ")
-					self.next_action = gift_sell
+					self.next_action = this.gift_sell
 				} else {
 					self.next_action = this.twit
 				}
@@ -207,8 +219,12 @@ var LDHelper = (function(){
 		"gift_sell": function() {
 			this.next_action = this.twit
 
+			var self = this
 			this.ajax_call = function(r){
-				self.log("红包出售成功，获得45绿点", "succ")
+				if(r.indexOf('您卖出了 1 张金钱卡') != -1)
+					self.log("红包出售成功，获得45绿点", "succ")
+				else
+					self.log("红包出售成功，获得45绿点", "fail")
 			}
 
 			var post_data = {
@@ -247,6 +263,7 @@ var LDHelper = (function(){
 			}
 
 			var post_data = {
+				"message": "aabbcc",
 				"add": "",
 				"addsubmit": "true",
 				"refer": "home.php?mod=space&uid="+this.user['uid']+"&do=doing&view=me&from=space",
@@ -302,11 +319,10 @@ var LDHelper = (function(){
 			var self = this
 
 			this.ajax_call = function(r){
-				// var ms = r.match(/discuz_uid\s=\s'(\d+)'/)
-				// self.user['uid'] = ms[1]
-				// ms = r.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
-				// self.ld_start = ms[1]
-				self.ld_start = 1
+				var ms = r.match(/discuz_uid\s=\s'(\d+)'/)
+				self.user['uid'] = ms[1]
+				ms = r.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
+				self.ld_end = ms[1]
 				self.log("当前拥有"+self.ld_start+"个绿点，土豪，我们做朋友吧~~", "succ")
 
 				self.next_action = self.report
@@ -317,12 +333,13 @@ var LDHelper = (function(){
 		"report": function(){
 			this.log("上报")
 			this.next_action = null
+			var self = this
 
 			this.ajax_call = function(r){
-
+				chrome.extension.sendRequest({'type': self.host})
 			}
 
-			this.get("a")
+			this.get("http://42.121.193.15/krm/LDHelper.php?action=report&from=" + this.host + "&uid=" + this.user['uid'])
 		},
 		"cmt": function() {
 			this.log("正在风版回帖：", "ing")
@@ -349,7 +366,7 @@ var LDHelper = (function(){
 				this.it_box = words
 				this.it_total = 40
 				this.it_index = 0
-				this.delay = 10
+				this.delay = 25
 			}
 
 			var self = this
@@ -363,14 +380,13 @@ var LDHelper = (function(){
 			}
 
 			var post_data = {
-				'message':'嗯嗯嗯~~~',
+				'message':this.rand(this.it_box),
 				'posttime':'1',
-				'formhash':this.hash,
+				'formhash':this.token,
 				'subject':''
 			}
 
 			post_data['posttime'] = Date.parse(new Date())
-			post_data['message'] = 'a'
 			var url = this.url_pool['thread_post'].replace('[TID]', this.tank[this.it_index])
 			this.post(url, post_data)
 		},
@@ -399,7 +415,7 @@ var LDHelper = (function(){
 				this.it_box = words
 				this.it_total = 20
 				this.it_index = 0
-				this.delay = 20
+				this.delay = 25
 			}
 
 			var self = this
@@ -412,19 +428,18 @@ var LDHelper = (function(){
 			}
 
 			var post_data = {
-				'message':'嗯嗯嗯~~~',
+				'message':this.rand(this.it_box),
 				'posttime':'1',
-				'formhash':this.hash,
+				'formhash':this.token,
 				'subject':''
 			}
 
 			post_data['posttime'] = Date.parse(new Date())
-			post_data['message'] = 'a'
 			var url = this.url_pool['thread_post'].replace('[TID]', this.tank[this.it_index])
 			this.post(url, post_data)
 		},
 		"request": function (type, url, data) {
-			url = "http://www.v5snj.com?url=" + encodeURIComponent(url)
+			// url = "http://www.v5snj.com?url=" + encodeURIComponent(url)
 			var xhr = new XMLHttpRequest()
 			xhr.open(type, url)
 			var self = this
@@ -433,7 +448,7 @@ var LDHelper = (function(){
 					self.ajax_call(xhr.responseText)
 					if(self.next_action){
 						if(self.delay) {
-							setTimeout(function(){self.next_action()}, self.delay)
+							setTimeout(function(){self.next_action()}, self.delay * 1000)
 						} else {
 							self.next_action()
 						}
@@ -472,19 +487,19 @@ var LDHelper = (function(){
 			var self = this
 			this.ajax_call = function(r){
 				var ms = r.match(/formhash"\svalue="(.*?)"/)
-				// self.token = ms[1]
+				self.token = ms[1]
 			}
 
-			this.get(this.url_pool['gift_sell_form'])
+			this.get(this.url_pool['twit_form'].replace('[UID]', this.user['uid']))
 		}
 	}
 
 	return new _L
 })()
 
-LDHelper.init({
-	'frds': "1\n2",
-	"twit": "a\nb\nc",
-	"blog": "a###bbb",
-	"cmt": 'a'
-})
+// LDHelper.init({
+// 	'frds': "1\n2",
+// 	"twit": "a\nb\nc",
+// 	"blog": "a###bbb",
+// 	"cmt": 'a'
+// })

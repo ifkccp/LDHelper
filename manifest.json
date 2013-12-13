@@ -17,13 +17,13 @@
 	},
 
 	"icons": {
-		"128": "img/Icon.png",
-		"16": "img/icon-16.png",
-		"48": "img/icon-48.png"
+		"128": "ico.png",
+		"16": "ico.png",
+		"48": "ico.png"
 	},
 
 	"page_action": {
-		"default_icon": "img/icon-16.png"
+		"default_icon": "ico.png"
 	},
 
 	"content_scripts": [

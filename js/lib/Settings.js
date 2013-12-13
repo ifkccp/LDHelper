@@ -11,6 +11,8 @@ var Settings = (function(){
 		"twit": "def1\ndef2\ndef3",
 		"blog": "def1\ndef2\ndef3",
 		"reply": "def1\ndef2\ndef3",
+		"last_sns": '',
+		"last_bbs": '',
 	}
 
 	_S.prototype = {
