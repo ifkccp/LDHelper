@@ -7,10 +7,10 @@ var Settings = (function(){
 
 	var DefaultVals = {
 		"frds": "1\n2\n3",
-		"cmt": "def1\ndef2\ndef3",
-		"twit": "def1\ndef2\ndef3",
-		"blog": "def1\ndef2\ndef3",
-		"reply": "def1\ndef2\ndef3",
+		"cmt": "不错不错，精彩的帖子～～\n小手一抖，绿点到手～～\n弱弱地支持一下～～\n这帖子是要逆天啊！！！！",
+		"twit": "今天吃了十个包子\n今天吃了十碗蛇羹\n今天捏了十个娃娃",
+		"blog": "标题1###内容1\n标题2###内容2\n标题3###内容3",
+		"reply": "很漂亮的照片啊\n不错不错\n赞个～～",
 		"last_sns": '',
 		"last_bbs": '',
 	}

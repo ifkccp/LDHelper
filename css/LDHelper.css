@@ -35,7 +35,7 @@
 
 #LDH_start:hover {
 	color: #333;
-	background-color: #999;
+	background-color: #ddd;
 }
 
 #LDH_log ul {
@@ -44,10 +44,10 @@
 #LDH_log ul li {list-style: disc;}
 
 
-.ing {color: gray}
-.succ {color: green}
-.red {color: red}
-.fail {color: blue}
+.ing , .sys {color: green}
+.succ {color: blue}
+.red {color: red; font-weight: bolder;}
+.fail {color: red}
 
 
 /* scroll bar */

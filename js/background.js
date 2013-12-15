@@ -3,15 +3,12 @@ function l(arg) {
 		console.log(arg)
 }
 
-function get_host (url) {
-	
-}
-
 function load_pa (tabId, changeInfo, tab) {
     if("complete" == changeInfo.status) {
         var url = tab.url
-        // if(url && url.indexOf('bbs.lvye.cn/thread') != -1)
-        if(url && url.indexOf('.lvye.cn') != -1)
+        if(url && 
+        	(url.indexOf('bbs.lvye.cn') != -1
+        	|| url.indexOf('sns.lvye.cn') != -1 ))
     		chrome.pageAction.show(tabId)	
 	}
 }
@@ -27,9 +24,12 @@ function send_msg (tab) {
 chrome.pageAction.onClicked.addListener(send_msg)
 
 chrome.extension.onRequest.addListener( function(request, sender, sendResponse) {
-	console.log(request)
-	if(request.type) {
-		Settings.set('last_' + request.type, (new Date()).toLocaleString())
+	if('save_time' == request.action) {
+		Settings.set('last_' + request.type, Date.parse(new Date())/1000)
+	} else if('redirect' == request.action) {
+		var opt_url = chrome.extension.getURL('/options.html')
+		var tabId = sender.tab.id
+		chrome.tabs.update(tabId, {url: opt_url})
 	}
 })
 

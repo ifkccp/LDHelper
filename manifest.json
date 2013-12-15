@@ -1,12 +1,12 @@
 {
 	"name": "LDHelper",
-	"version": "1.0.0",
+	"version": "1.0",
 	"manifest_version": 2,
 	"permissions": [
 		"tabs",
-		"*://*.lvye.cn/*",
-		"*://42.121.193.15/*",
-		"*://www.v5snj.com/*"
+		"*://bbs.lvye.cn/*",
+		"*://sns.lvye.cn/*",
+		"*://42.121.193.15/*"
 	],
 
 	"background": {
@@ -29,13 +29,12 @@
 	"content_scripts": [
 		{
 			"js": [
-				"js/lib/Http.js",
 				"js/lib/Utils.js",
 				"js/LDHelper.js",
 				"js/test.js"
 			],
 			"css": ["css/LDHelper.css"],
-			"matches": ["*://*.lvye.cn/*"],
+			"matches": ["*://bbs.lvye.cn/*", "*://sns.lvye.cn/*"],
 			"run_at": "document_end"
 		}
 	],
