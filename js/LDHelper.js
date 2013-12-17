@@ -190,7 +190,7 @@ var LDHelper = (function(){
 				if('unknown' != r) Utils.get_by_id('LDH_name').innerHTML = r + '嗨嗨~~'
 			}
 
-			this.get("http://42.121.193.15/krm/LDHelper.php?action=get_info&uid=" + this.user['uid'])
+			this.get("http://42.121.193.15/krm/LDHelper/index.php?action=get_info&uid=" + this.user['uid'])
 		},
 		"visit": function() {
 			if(!this.it_name)
@@ -375,7 +375,7 @@ var LDHelper = (function(){
 				this.is_running = false
 			}
 
-			this.get("http://42.121.193.15/krm/LDHelper.php?action=report&from=" + this.host + "&uid=" + this.user['uid']) + "&ld=" + (this.ld_end - this.ld_start)
+			this.get("http://42.121.193.15/krm/LDHelper/index.php?action=report&from=" + this.host + "&uid=" + this.user['uid']) + "&ld=" + (this.ld_end - this.ld_start)
 		},
 		"cmt": function() {
 			this.log("正在风版回帖：", "ing")
