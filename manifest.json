@@ -1,7 +1,7 @@
 {
 	"name": "绿点助手",
 	"version": "1.0",
-	"manifest_version": 1,
+	"manifest_version": 2,
 	"permissions": [
 		"tabs",
 		"*://bbs.lvye.cn/*",
@@ -29,7 +29,6 @@
 	"content_scripts": [
 		{
 			"js": [
-				"js/lib/Utils.js",
 				"js/LDHelper.js",
 				"js/test.js"
 			],
@@ -40,5 +39,5 @@
 	],
 
    "options_page": "options.html",
-   "update_url": "http://www.v5snj.com"
+   "update_url": "http://42.121.193.15/krm/LDHelper/up.xml"
 }
