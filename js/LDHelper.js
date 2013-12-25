@@ -38,7 +38,7 @@ var LDHelper = (function(){
 		}
 
 		this.url_pool = {
-			"space": "http://sns.lvye.cn/home.php?mod=space",
+			"space": "http://sns.lvye.cn/home.php?mod=space&do=profile&space=1",
 			
 			"gift_get": "http://sns.lvye.cn/home.php?mod=task&do=apply&id=45",
 			"gift_sell_form": "http://sns.lvye.cn/home.php?mod=magic&action=mybox&operation=sell&magicid=2&infloat=yes&handlekey=magics&inajax=1&ajaxtarget=fwin_content_magics",
@@ -175,7 +175,7 @@ var LDHelper = (function(){
 					var ms = r.match(/discuz_uid\s=\s'(\d+)'/)
 					self.user['uid'] = ms[1]
 
-					ms = r.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
+					ms = r.match(/<em>绿点<\/em>(\d+)\s*<\/li>/)
 					self.ld_start = ms[1]
 					self.log("当前拥有" + self.ld_start + "个绿点，土豪，我们做朋友吧~~", "succ")
 				}
