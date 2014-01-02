@@ -357,7 +357,8 @@ var LDHelper = (function(){
 			var self = this
 
 			this.ajax_call = function(r){
-				ms = r.match(/pacecp&ac=credit">(\d+)<\/a><li>绿币/)
+
+				ms = r.match(/<em>绿点<\/em>(\d+)\s*<\/li>/)
 				self.ld_end = ms[1]
 				self.log("当前拥有"+self.ld_end+"个绿点，本次操作共获取"+(this.ld_end - this.ld_start)+"个。", "succ")
 
