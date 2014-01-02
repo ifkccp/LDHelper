@@ -122,7 +122,7 @@ var LDHelper = (function(){
 			words += this.delta_time()
 
 			var s = '<div id="LDH_mask"></div>'
-			s += '<div id="LDH_log"><h3>绿点助手 1.0<span id="LDH_name"></span><span id="LDH_close"></span></h3><div>'+words+'<br /><span id="LDH_start"> 开搞！</span></div></div>'
+			s += '<div id="LDH_log"><h3>绿点助手 1.1<span id="LDH_name"></span><span id="LDH_close"></span></h3><div>'+words+'<br /><span id="LDH_start"> 开搞！</span></div></div>'
 			_box.innerHTML = s
 			document.body.appendChild(_box)
 
